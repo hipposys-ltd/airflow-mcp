@@ -12,6 +12,7 @@ langgraph-checkpoint-sqlite
 langchain-aws
 langchain-anthropic
 langchain_openai
+langfuse==2.60.8
 mcp[cli]
 httpx
 psycopg[binary]

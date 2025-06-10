@@ -8,6 +8,7 @@ from app.server.llm import LLMAgent
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 import os
+from langfuse.callback import CallbackHandler
 
 
 chat_router = APIRouter()
@@ -18,8 +19,17 @@ class ChatRequest(BaseModel):
 
 
 def get_user_chat_config(session_id: str) -> dict:
+    langfuse_handler = CallbackHandler(
+            user_id="TestAirflowMCP",
+            session_id=f"{session_id}",
+            public_key="pk-lf-6dabfdb8-8f1b-448e-91ce-843757a22d13",
+            secret_key="sk-lf-ce3e5fea-fb42-4085-afba-4cbda68b54ca",
+            host="http://host.docker.internal:3000"
+        )
     return {'configurable': {'thread_id': session_id},
-            "recursion_limit": 100}
+            "recursion_limit": 100,
+            "callbacks": [langfuse_handler]
+            }
 
 
 @chat_router.post("/new")
